@@ -1,0 +1,24 @@
+
+
+remote scriptblock is divided into these sections:
+
+When setting up the space initially:
+
+1) load the functions
+
+2) create storage space
+
+3) collect state data
+
+4) encode data & write output
+
+
+When expanding the space:
+
+1) load the functions
+
+2) expand the storage space
+
+3) collect state data
+
+4) encode data & write output

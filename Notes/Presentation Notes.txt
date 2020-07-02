@@ -1,0 +1,15 @@
+
+
+1 create the VM in Azure before the presentation
+  (no need for anyone to wait for terraform to finish
+   they just want to see the storage spaces part, which is the important)
+
+2 show the VM and its attached disks in Azure web console
+  then RDP to the VM and show that it only has 2 offline disks
+  no configuration has been done yet
+
+3 run the command to create the initial storage spaces volume
+  then RDP back to the VM and show them the details (pool, vdisk, disk mgmt)
+
+4 then run the command to expand the storage spaces volume
+  then RDP back to the VM and show them again what happened

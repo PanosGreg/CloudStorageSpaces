@@ -1,0 +1,48 @@
+
+
+Class: [AzureSS.StorageSpaceInfo]
+
+Properties:
+
+PSProperties
+- PSComputerName
+- PsUserName
+- PSDatetime
+- PSProcessID
+- PSProcessName
+- PSProcessPath
+
+ExpandInfo
+- SizePerExpansion
+- ExpasionsLeft
+- PotentialMaxSize
+- ExpansionsUsed
+
+DefaultDisk
+- Prefix
+- SkuName
+- DiskSizeGB
+- Location
+
+PhysicalDisks
+- FriendlyName
+- Size
+- MediaType
+- Lun
+- InStorageSpace
+
+VirtualDisk
+- Letter
+- Name
+- Size
+- SizeRemaining
+- ResiliencySetting
+- FileSystem
+
+NumberOf
+- ColumnsInSS
+- DisksInSS
+- MaxDisksInVM
+- AttachedDisksInVM
+- AvailableDisksInVM
+

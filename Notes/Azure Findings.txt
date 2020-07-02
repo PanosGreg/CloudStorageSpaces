@@ -1,0 +1,23 @@
+FINDING:
+
+you cannot increase a storage spaces pool size by expanding the existing disks
+there is no command to do that
+you can only add disks to an already storage pool in order to increase the virtual disk
+
+
+so if you have 4 disks of 1tb in a vm
+and have set them up in a storage pool 
+(it's irrelevant if you have created a virtual disk or not)
+
+and then you detach them, increase their size (let's say make them double size)
+and then re-attach the disks.
+
+You'll see your storage pool as before, but you won't be able to increase its
+size. Although you'll be able to see the left space in the physical disks.
+
+
+FINDING 2:
+
+you cannot reduce the size of a managed disk in Azure
+
+when changing the size of a managed disk, you can only increase its capacity
