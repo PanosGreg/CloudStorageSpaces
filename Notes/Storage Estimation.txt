@@ -1,0 +1,69 @@
+
+Problem: if the SS chunks are too big (20TB) so each time we want to expand
+         we can't expand by less than 20TB. Which will be expensive
+Solution: make sure the chunks are performant enough, but small enough
+          in order to get the perf we need from a single chunk (since data spans and does not strip between chunks)
+          but also be able to expand by a relatively small amount
+          also do note that the instance can have up to 32 disks max
+
+
+Requirements
+260MBps Bandwidth  => provision at least double that, so min 500MBps
+6000 IOPS          => provision at least double that, so min 10000 IOPS let' say
+once/6months expand the volume
+
+Example past expansion: 8TB -> 16TB -> 24TB [2 expansions in 1 year]
+
+                      Capacity                Disks
+let's extrapolate:  8 -> 16 -> 24 (1st yr)  4x2 ->  8x2 -> 12x2
+                   24 -> 32 -> 40 (2nd yr) 12x2 -> 16x2 -> 20x2
+                   40 -> 48 -> 56 (3rd yr) 20x2 -> 24x2 -> 28x2
+                   56 -> 64 -> 72 (4th yr) 28x2 -> 32x2 -> --- --> max number of disks
+                   80 -> 88 -> 96 (5th yr)
+
+stripe: 2x5TB                 ┌─> max IOPS
+1st yr:  10 ->  20  -> 30    2x5 ->  4x5  -> 6x5
+2nd yr:  30 ->  40  -> 50    6x5 ->  8x5  -> 10x5
+3rd yr:  50 ->  60  -> 70   10x5 -> 12x5  -> 14x5
+4th yr:  70 ->  80  -> 90   14x5 -> 16x5  -> 18x5 --> max BW with gp2 disks
+5th yr:  90 -> 100  -> 110  18x5 -> 20x5  -> 22x5
+
+so we need to have the needed performance in a 2-disk stripe
+which is 500MBps and 10K IOPS
+
+
+most likely you'll need more space increments after the 2nd year
+so how much time this array will last depends on the amount of space needed over time
+
+stripe: 2x5TB                                ┌─> max IOPS for r5d.xlarge
+1st yr [+10TB/expand]:  10 ->  20  -> 30    2x5 ->  4x5  -> 6x5
+2nd yr [+10TB/expand]:  30 ->  40  -> 50    6x5 ->  8x5  -> 10x5
+3rd yr [+20TB/expand]:  50 ->  70  -> 90   10x5 -> 14x5  -> 18x5 --> max BW with gp2 disks
+4th yr [+20TB/expand]:  90 -> 110  -> 130  18x5 -> 22x5  -> 26x5
+5th yr [+30TB/expand]: 130 -> 160          26x5 -> 32x5  -> ---  --> max number of disks for r5d.xlarge
+
+stripe: 2x5TB                                ┌─> max IOPS for r5d.xlarge at 2 disks
+1st yr [+10TB/expand]:  10 ->  20  -> 30    2x5 ->  4x5  -> 6x5
+2nd yr [+20TB/expand]:  30 ->  50  -> 70    6x5 -> 10x5  -> 14x5
+3rd yr [+30TB/expand]:  70 -> 100  -> 130  14x5 -> 20x5  -> 26x5 --> max BW for r5d.xlarge at 18 disks
+4th yr [+30TB/expand]: 130 -> 160  -> ---  26x5 -> 32x5  -> ---  --> max number of disks for r5d.xlarge at 32 disks
+
+
+
+gp2
+2 x 5TB = 10TB
+2 x 250 = 500MBps
+2 x 15K => 18.75K max.instance IOPS
+Cost: $1.000/month
+Expand by 10TB each time (and by 500MBps), no change in IOPS (we're already at max)
+
+io1
+2 x 5TB  = 10TB
+2 x 1000 = 2GBps
+2 x 5K   = 10K IOPS (more than 6K needed)
+Cost: 1250+650=$1.900/month
+Expand by 10TB each time and by 2GBps (so max BW on 1st expansion), and max IOPS on 1st expansion
+
+Verdict:
+- You have to go with storage spaces due to size limitations of single disk, otherwise you can't exceed 16TB volume
+- io1 costs on average x2 the price of gp2
