@@ -45,6 +45,7 @@ switch ($Action) {
 [void]$sb.AppendLine('$Adapter = 1')  # <-- this is the SCSI adapter of the VM, where the LUNs reside
                                       #     in Azure all DATA disks are attached to Adapter 1
                                       #     in local Hyper-V all disks are attached to Adapter 0
+                                      #     in AWS (non-NVMe) disks are attached to Adapter 2
 switch ($Action) {
     'Create' {$cmd='Create-StorageSpace -NumberOfColumns $Cols -Name $VolumeName -Lun $Lun -Adapter $Adapter'}
     'Expand' {$cmd='Expand-StorageSpace -Name $VolumeName -Lun $Lun -Adapter $Adapter'}

@@ -1,0 +1,48 @@
+
+
+
+
+PowerShell Modules Used:
+A) in AWS
+   - AWS.Tools.Common
+   - AWS.Tools.EC2
+   
+B) in Azure
+   - Az.Accounts
+   - Az.Compute
+   
+
+PowerShell Functions Used:
+A) in Azure
+   - Connect-AzAccount
+   - Set-AzContext
+   - Get-AzSubscription
+   - Get-AzVM
+   - Get-AzVMSize
+   - Get-AzDisk
+   - New-AzDiskConfig
+   - New-AzDisk
+   - Add-AzVMDataDisk
+   - Update-AzVM
+   
+B) in AWS
+   - Set-DefaultAWSRegion
+   - Get-EC2Instance
+   - Get-EC2Subnet
+   - New-EC2Volume
+   - Add-EC2Volume
+   
+   
+Note:
+- Might do the same (as above) for On-Prem Hyper-V
+  (functions & modules needed for creating & attaching a disk in a VM)
+- Might do the same for On-Prem VMWare (again via PowerShell)
+
+So there will be 4 options in total:
+- AWS
+- Azure
+- Hyper-V
+- VMWare
+
+All of them in PowerShell (thanks to the fact that the appropriate
+PS modules exist for each one of them)

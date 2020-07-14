@@ -7,7 +7,7 @@
 Import-Module C:\Code\AzureTF\PowerShell\AzureStorageSpaces.psd1
 
 # load the TF functions
-dir C:\Code\AzureTF\PowerShell\*.ps1 | foreach {. $_}
+dir C:\Code\AzureTF\PowerShell\*.ps1 | foreach {. $_.FullName}
 
 # create the VM
 $TfPath  = 'C:\Code\AzureTF\Terraform\'

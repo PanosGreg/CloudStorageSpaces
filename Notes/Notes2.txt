@@ -1,0 +1,29 @@
+
+
+Private Functions
+----------------
+Get-DiskFromLun
+Get-DiskFromSerial
+Prefix
+Test-IsAdmin
+ConvertTo-PrettyCapacity
+ConvertTo-PrettyPercentage
+Find-CloudProvider
+
+
+Public Functions
+----------------
+Add-DisksInAzure         [cloud-specific / run-anywhere]
+Add-DisksInAws           [cloud-specific / run-anywhere]
+Get-DisksInAzure         [cloud-specific / run-anywhere]  => [CloudSS.CloudDiskInfo]
+Get-DisksInAws           [cloud-specific / run-anywhere]  => [CloudSS.CloudDiskInfo]
+Initialize-StorageSpace  [cloud-agnostic / run-locally]
+Expand-StorageSpace      [cloud-agnostic / run-locally]
+Get-StorageSpace         [cloud-agnostic / run-locally]   => [CloudSS.LocalDiskInfo]
+
+
+.NET Classes
+------------
+[CloudSS.LocalDiskInfo]
+[CloudSS.CloudDiskInfo]
+[CloudSS.DiskInfo]        => [CloudSS.DiskInfo]::new($LocalDisk,$CloudDisk)

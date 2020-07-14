@@ -1,17 +1,17 @@
 #Get public and private functions
-    $Public  = Join-Path -Path $PSScriptRoot -ChildPath 'Public'
-    $Private = Join-Path -Path $PSScriptRoot -ChildPath 'Private'
+    $PublicPath  = Join-Path -Path $PSScriptRoot -ChildPath 'Public'
+    $PrivatePath = Join-Path -Path $PSScriptRoot -ChildPath 'Private'
     $params     = @{
         Filter      = '*.ps1'
         Recurse     = $true
         File        = $true
         ErrorAction = 'SilentlyContinue'
     }
-    $Public  = @(Get-ChildItem $Public  @params)
-    $Private = @(Get-ChildItem $Private @params | Where PSPath -NotLike '*Private/RemoteOnly*')
+    $Public  = Get-ChildItem $PublicPath  @params
+    $Private = Get-ChildItem $PrivatePath @params | Where PSPath -NotLike '*Private/RemoteOnly*'
 
 #Dot source the files
-    Foreach($import in @($Public+$Private))
+    Foreach($import in ($Public+$Private))
     {
         Try
         {
@@ -23,17 +23,16 @@
         }
     }
 
-<#
-#Get C# files and compiled libraries
-    $CSharpFiles = Get-ChildItem $Private '*.cs'
 
+#Get C# files and compiled libraries
+    $CSharpFiles = Get-ChildItem -Path $PrivatePath -Filter '*.cs'
 
 #Load the Classes & Enumerations
     Foreach ($file in $CSharpFiles)
     {
         Try
         {
-            Add-Type -Path $file.FullName -ErrorAction Stop
+           #Add-Type -Path $file.FullName -ErrorAction Stop
         }
         Catch
         {
@@ -41,4 +40,4 @@
         }
 
     }
-#>
+
